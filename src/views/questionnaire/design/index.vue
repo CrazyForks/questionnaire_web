@@ -9,6 +9,7 @@ import PreviewPopup from './components/PreviewPopup.vue';
 import userDefined from '@/utils/userDefined';
 import IframeMessage from '@/common/IframeMessage';
 import { ElMessageBox } from 'element-plus';
+import designUtils from './designUtils';
 
 
 const { questionnaireData, subscribe, skinStr } = useDesign();
@@ -40,6 +41,28 @@ const importJSON = () => {
     questionnaireData.value = initQuestionnaireData({
       questionnaireData: data
     });
+  });
+};
+
+// 导出配置DSL
+const exportDSL = () => {
+  const fileName = questionnaireData.value.key + '的问卷DSL.txt';
+
+  let dslText = '';
+
+  questionnaireData.value.questionList.forEach(question => {
+    let dsl = question.getDSL();
+
+    dslText += `${dsl}\n\n`;
+  });
+
+  userDefined.exportTxt(dslText, fileName);
+};
+
+// 导入配置DSL
+const importDSL = () => {
+  userDefined.importTxt().then((txt) => {
+    questionnaireData.value.questionList = designUtils.parseDSL(txt);
   });
 };
 
@@ -189,6 +212,18 @@ defineExpose({
                     <Download />
                   </el-icon>
                   导入问卷JSON
+                </el-dropdown-item>
+                <el-dropdown-item @click="exportDSL()">
+                  <el-icon class="mr-1">
+                    <Upload />
+                  </el-icon>
+                  导出问卷DSL
+                </el-dropdown-item>
+                <el-dropdown-item @click="importDSL()">
+                  <el-icon class="mr-1">
+                    <Download />
+                  </el-icon>
+                  导入问卷DSL
                 </el-dropdown-item>
                 <template v-if="userDefined.isMobile">
                   <el-dropdown-item @click="clearQuestionnaire()">

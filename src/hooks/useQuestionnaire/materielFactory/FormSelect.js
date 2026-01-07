@@ -239,4 +239,63 @@ export default class FormSelect extends BaseMateriel {
       }
     ];
   }
+
+  getDSL() {
+    let dsl = this.getBaseDSL();
+
+    this.props.options.forEach(item => {
+      let str = `${item.label}|${item.value}`;
+
+      if (item.label === item.value) {
+        str = item.label;
+      }
+
+      dsl += `\n- ${str}`;
+    });
+
+    return dsl;
+  }
+
+  setDSL(dsl = '') {
+    const data = this.parseBaseDSL(dsl);
+
+    if (!data) {
+      return;
+    }
+
+    this.props.title = data.title;
+    this.props.required = data.required;
+    this.props.desc = data.desc;
+
+    const lines = dsl.split(/\r?\n/);
+
+    const options = [];
+
+    lines.forEach(line => {
+
+      // 如果以 - 开头
+      if (line.startsWith('-')) {
+        let optionText = line.replace(/\s+/g, '');
+
+        // 去掉开头的 -
+        optionText = optionText.slice(1);
+
+        let label = optionText;
+        let value = optionText;
+
+        if (optionText.includes('|')) {
+          const parts = optionText.split('|');
+          label = parts[0];
+          value = parts[1];
+        }
+
+        options.push({
+          label,
+          value
+        });
+      }
+    });
+
+    this.props.options = options;
+  }
 }

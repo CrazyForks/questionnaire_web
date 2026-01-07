@@ -222,7 +222,6 @@ const scrollIntoView = (domId) => {
 };
 
 const exportJSON = (data, fileName) => {
-
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json;charset=utf-8' });
 
   if (window.navigator.msSaveOrOpenBlob) {
@@ -287,6 +286,40 @@ function parseUA() {
   return { deviceType, deviceOS };
 }
 
+const exportTxt = (str, fileName) => {
+  const blob = new Blob([str], { type: 'text/plain;charset=utf-8' });
+
+  if (window.navigator.msSaveOrOpenBlob) {
+    navigator.msSaveBlob(blob, fileName);
+  } else {
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+  }
+};
+
+const importTxt = () => {
+  return new Promise((resolve, reject) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.txt';
+    input.click();
+
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.readAsText(file);
+
+      reader.onload = (e) => {
+        resolve(e.target.result);
+      };
+    };
+  });
+};
+
 export default {
   localFullScreen,
   getParameter,
@@ -300,5 +333,7 @@ export default {
   scrollIntoView,
   exportJSON,
   importJSON,
-  parseUA
+  parseUA,
+  exportTxt,
+  importTxt
 };

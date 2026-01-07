@@ -56,6 +56,7 @@ class VerifyModel {
   }
 }
 
+
 export default class BaseMateriel {
 
   constructor(instance) {
@@ -292,5 +293,77 @@ export default class BaseMateriel {
         propsKey: 'move'
       }
     ];
+  }
+
+  getBaseDSLStruct() {
+    return {
+      title: this.props.title,
+      type: this.title,
+      required: this.props.required,
+      desc: this.props.desc
+    };
+  }
+
+  getBaseDSL() {
+    // 题目标题[题目类型][题目设置](题目描述)
+    const s = this.getBaseDSLStruct();
+
+    let dsl = `${s.title || '这是题目标题'}[${s.type}][${s.required ? '必填' : '选填'}]`;
+
+    if (s.desc) {
+      dsl += `(${s.desc})`;
+    }
+
+    return dsl;
+  }
+
+  getDSL() {
+    return this.getBaseDSL();
+  }
+
+  parseBaseDSL(dsl = '') {
+    if (!dsl) {
+      return null;
+    }
+
+    const lines = dsl.split(/\r?\n/);
+
+    if (!lines.length) {
+      return null;
+    }
+
+    const dslText = lines[0].trim();
+
+    let result = null;
+
+    const questionLineRegex = /^(.+?)\[(.+?)\](?:\[(必填|选填)\])?(?:\((.+)\))?$/;
+
+    const match = questionLineRegex.exec(dslText);
+
+    if (match) {
+      const [, title, type, requiredFlag, desc] = match;
+
+      result = {
+        title: title.trim(),
+        type: type.trim(),
+        required: requiredFlag === '必填',
+        desc: desc || ''
+      };
+    }
+
+    return result;
+  }
+
+
+  setDSL(dsl = '') {
+    const data = this.parseBaseDSL(dsl);
+
+    if (!data) {
+      return;
+    }
+
+    this.props.title = data.title;
+    this.props.required = data.required;
+    this.props.desc = data.desc;
   }
 }
