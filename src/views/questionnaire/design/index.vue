@@ -191,58 +191,58 @@ defineExpose({
             <Expand />
           </el-icon>
         </div>
-        <div>
+        <div class="page__edit__head__right">
           <el-dropdown>
-            <el-button>
-              工具菜单
-              <el-icon class="ml-1">
+            <div class="page__btn mr-2">
+              <el-icon class="page__btn__icon">
                 <arrow-down />
               </el-icon>
-            </el-button>
+              工具菜单
+            </div>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="exportJSON()">
                   <el-icon class="mr-1">
                     <Upload />
                   </el-icon>
-                  导出问卷JSON
+                  导出JSON
                 </el-dropdown-item>
                 <el-dropdown-item @click="importJSON()">
                   <el-icon class="mr-1">
                     <Download />
                   </el-icon>
-                  导入问卷JSON
+                  导入JSON
                 </el-dropdown-item>
                 <el-dropdown-item @click="exportDSL()">
                   <el-icon class="mr-1">
                     <Upload />
                   </el-icon>
-                  导出问卷DSL
+                  导出DSL
                 </el-dropdown-item>
                 <el-dropdown-item @click="importDSL()">
                   <el-icon class="mr-1">
                     <Download />
                   </el-icon>
-                  导入问卷DSL
+                  导入DSL
                 </el-dropdown-item>
                 <template v-if="userDefined.isMobile">
                   <el-dropdown-item @click="clearQuestionnaire()">
                     <el-icon class="mr-1">
                       <Delete />
                     </el-icon>
-                    清空问卷
+                    清空
                   </el-dropdown-item>
                   <el-dropdown-item @click="previewPopupRef.open(questionnaireData)">
                     <el-icon class="mr-1">
                       <View />
                     </el-icon>
-                    预览问卷
+                    预览
                   </el-dropdown-item>
                   <el-dropdown-item @click="questionnaireSetting()">
                     <el-icon class="mr-1">
                       <Setting />
                     </el-icon>
-                    问卷配置
+                    配置
                   </el-dropdown-item>
                 </template>
               </el-dropdown-menu>
@@ -250,24 +250,24 @@ defineExpose({
           </el-dropdown>
 
           <template v-if="!userDefined.isMobile">
-            <el-button type="danger" plain @click="clearQuestionnaire()" class="ml-3">
-              <el-icon class="mr-1">
+            <div class="page__btn page__btn--danger" @click="clearQuestionnaire()">
+              <el-icon class="page__btn__icon">
                 <Delete />
               </el-icon>
-              清空问卷
-            </el-button>
-            <el-button type="success" plain @click="previewPopupRef.open(questionnaireData)">
-              <el-icon class="mr-1">
+              清空
+            </div>
+            <div class="page__btn page__btn--success" @click="previewPopupRef.open(questionnaireData)">
+              <el-icon class="page__btn__icon">
                 <View />
               </el-icon>
-              预览问卷
-            </el-button>
-            <el-button type="primary" plain @click="questionnaireSetting()">
-              <el-icon class="mr-1">
+              预览
+            </div>
+            <div class="page__btn" @click="questionnaireSetting()">
+              <el-icon class="page__btn__icon">
                 <Setting />
               </el-icon>
-              问卷配置
-            </el-button>
+              配置
+            </div>
           </template>
         </div>
       </div>
@@ -323,14 +323,18 @@ defineExpose({
 }
 
 .page__edit__head {
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: var(--bg-base-color);
   border-radius: var(--br-3);
   margin-bottom: var(--m-2);
-  padding: 0 var(--p-2);
+  padding: var(--p-1) var(--p-2);
+}
+
+.page__edit__head__right {
+  display: flex;
+  align-items: center;
 }
 
 .page__edit__content {
@@ -358,6 +362,46 @@ defineExpose({
 
 :deep(.page__drawer .el-drawer__body) {
   padding: 0;
+}
+
+.page__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-base-color);
+  color: var(--text-base-color);
+  border: 1px solid var(--border-base-color);
+  padding: calc(var(--p-1) / 2) var(--p-2);
+  border-radius: var(--br-5);
+  font-size: var(--fs-2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  line-height: var(--lh-1);
+  margin-right: var(--m-1);
+}
+
+.page__btn:last-child {
+  margin-right: 0;
+}
+
+.page__btn:hover {
+  border: 1px solid var(--primary-text-color-1);
+  color: var(--primary-text-color-1);
+}
+
+.page__btn__icon {
+  font-size: var(--fs-2);
+  margin-right: calc(var(--m-1) / 2);
+}
+
+.page__btn--danger:hover {
+  border-color: #f36162;
+  color: #f36162;
+}
+
+.page__btn--success:hover {
+  border-color: #61b940;
+  color: #61b940;
 }
 
 /* 针对宽度小于 768px 的设备（通常是移动设备） */
