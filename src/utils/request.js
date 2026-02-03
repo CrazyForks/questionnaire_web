@@ -43,7 +43,7 @@ const getConfigSimpleInfo = (config) => {
 
   if ((typeof config.data) === 'string') {
     try {
-      data = JSON.parse(data);
+      data = JSON.parse(config.data);
     } catch (e) {
       // 不用处理
     }

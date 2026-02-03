@@ -5,12 +5,12 @@ import useAction from '@/hooks/useAction';
 const { parseActionList } = useAction();
 
 
-export default class LogicProcessor {
+export default class EventProcessor {
 
   constructor(questionnaireData, option = {}) {
 
     if (!questionnaireData) {
-      throw new Error('[LogicProcessor](constructor): questionnaireData不能为空');
+      throw new Error('[EventProcessor](constructor): questionnaireData不能为空');
     }
 
     this.questionnaireData = questionnaireData;
